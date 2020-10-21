@@ -143,5 +143,6 @@ public interface DvlRepository<T extends MxBean<?>, ID> extends PagingAndSorting
 	 * @since 29 de abr de 2019
 	 * @author Ulisses Lima
 	 */
-	List<T> findAllLike(String id);
+	List<T> findAllLike(String name);
+
 }

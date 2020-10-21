@@ -24,6 +24,8 @@ import com.dvlcube.app.manager.data.SkillBean;
 import com.dvlcube.app.manager.data.vo.MxRestResponse;
 import com.dvlcube.utils.interfaces.rest.MxFilterableBeanService;
 
+import ch.qos.logback.classic.Logger;
+
 /**
  * @since 4 de jun de 2019
  * @author Ulisses Lima
@@ -39,6 +41,7 @@ public class SkillService implements MxFilterableBeanService<SkillBean, Long> {
 	@Override
 	@GetMapping
 	public Iterable<SkillBean> get(@RequestParam Map<String, String> params) {
+		System.out.println("AQUI");
 		return repo.firstPage();
 	}
 
@@ -77,11 +80,26 @@ public class SkillService implements MxFilterableBeanService<SkillBean, Long> {
 	public List<SkillBean> getGroupFiltered(@PathVariable String group, @RequestParam Map<String, String> params) {
 		return repo.findAllBy(params, group);
 	}
-
-	@GetMapping("/like")
-	public Iterable<SkillBean> getLike(@RequestParam(required = true) String id) {
-		return repo.findAllLike(id);
+	@GetMapping("/like/{name}")
+	public Iterable<SkillBean> getLike(@PathVariable(required = true) String name) {
+		return repo.findAllLike(name);
 	}
+	@GetMapping("/name/{name}")
+	public Iterable<SkillBean> getLikeName(@PathVariable  String name) {
+		return repo.findAllLike(name);
+	}
+	@GetMapping("/exist/name/{name}")
+	public boolean getIfExistName(@PathVariable  String name) {
+		boolean userExist = false;
+		List<SkillBean> user = repo.findAllLike(name);
+		if(user != null && !user.isEmpty()) {
+			userExist = true;
+		}
+		return userExist;
+		
+	}
+	
+	
 
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable Long id) {
